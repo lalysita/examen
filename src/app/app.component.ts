@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms'; // Importar los módulos necesarios
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -20,19 +20,21 @@ export class AppComponent implements OnInit {
     'https://assets.dev-filo.dift.io/img/2023/04/17/34138600437217340514770441810125032647274242_n_(1)5682_sq.jpg'
   ];
 
-  // Opciones de carrusel para adaptarse a diferentes tamaños de pantalla
   responsiveOptions = [
     { breakpoint: '1024px', numVisible: 1, numScroll: 1 },
     { breakpoint: '768px', numVisible: 1, numScroll: 1 },
     { breakpoint: '480px', numVisible: 1, numScroll: 1 }
   ];
 
-  // Inyectar FormBuilder para crear el formulario
+  // Referencias a las secciones
+  @ViewChild('inicio') inicio!: ElementRef;
+  @ViewChild('biografia') biografia!: ElementRef;
+  @ViewChild('galeria') galeria!: ElementRef;
+  @ViewChild('contacto') contacto!: ElementRef;
+
   constructor(private fb: FormBuilder) {}
 
-  // Inicializar el formulario con los controles
   ngOnInit() {
-    // Aquí inicializamos el formulario
     this.profileForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -45,12 +47,31 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // Método para manejar el envío del formulario
   onSubmit() {
     if (this.profileForm.valid) {
       console.log("Formulario enviado:", this.profileForm.value);
     } else {
       console.log("Formulario inválido");
+    }
+  }
+
+  // Métodos para redirigir al inicio
+  goToSection(section: string) {
+    switch (section) {
+      case 'inicio':
+        this.inicio?.nativeElement.scrollIntoView({ behavior: 'smooth' });
+        break;
+      case 'biografia':
+        this.biografia?.nativeElement.scrollIntoView({ behavior: 'smooth' });
+        break;
+      case 'galeria':
+        this.galeria?.nativeElement.scrollIntoView({ behavior: 'smooth' });
+        break;
+      case 'contacto':
+        this.contacto?.nativeElement.scrollIntoView({ behavior: 'smooth' });
+        break;
+      default:
+        break;
     }
   }
 }
